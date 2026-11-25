@@ -187,7 +187,16 @@ export const witnesses = pgTable(
   (t) => [index("witnesses_will_idx").on(t.willId)],
 );
 
-export const willRelations = relations(wills, ({ one, many }) => ({
+export const usersRelations = relations(users, ({ many }) => ({
+  wills: many(wills),
+  sessions: many(sessions),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+}));
+
+export const willsRelations = relations(wills, ({ one, many }) => ({
   testator: one(users, { fields: [wills.testatorId], references: [users.id] }),
   versions: many(willVersions),
   beneficiaries: many(beneficiaries),
@@ -197,7 +206,41 @@ export const willRelations = relations(wills, ({ one, many }) => ({
   assets: many(assets),
 }));
 
+export const willVersionsRelations = relations(willVersions, ({ one }) => ({
+  will: one(wills, { fields: [willVersions.willId], references: [wills.id] }),
+}));
+
+export const beneficiariesRelations = relations(beneficiaries, ({ one, many }) => ({
+  will: one(wills, { fields: [beneficiaries.willId], references: [wills.id] }),
+  bequests: many(bequests),
+}));
+
+export const assetsRelations = relations(assets, ({ one, many }) => ({
+  will: one(wills, { fields: [assets.willId], references: [wills.id] }),
+  bequests: many(bequests),
+}));
+
+export const bequestsRelations = relations(bequests, ({ one }) => ({
+  will: one(wills, { fields: [bequests.willId], references: [wills.id] }),
+  asset: one(assets, { fields: [bequests.assetId], references: [assets.id] }),
+  beneficiary: one(beneficiaries, {
+    fields: [bequests.beneficiaryId],
+    references: [beneficiaries.id],
+  }),
+}));
+
+export const executorsRelations = relations(executors, ({ one }) => ({
+  will: one(wills, { fields: [executors.willId], references: [wills.id] }),
+}));
+
+export const witnessesRelations = relations(witnesses, ({ one }) => ({
+  will: one(wills, { fields: [witnesses.willId], references: [wills.id] }),
+}));
+
+export type User = typeof users.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
 export type Will = typeof wills.$inferSelect;
+export type WillVersion = typeof willVersions.$inferSelect;
 export type Beneficiary = typeof beneficiaries.$inferSelect;
 export type Asset = typeof assets.$inferSelect;
 export type Bequest = typeof bequests.$inferSelect;

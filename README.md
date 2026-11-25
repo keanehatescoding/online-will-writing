@@ -42,8 +42,10 @@ What is here:
 - `drizzle.config.ts`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs`
 - `src/app/globals.css`, `.gitignore`, `.env.example`
 
+What is here now:
+- `src/app/layout.tsx` + `src/app/page.tsx` — minimal Next.js app shell and landing page.
+
 What is still a stub:
-- `src/app/layout.tsx` + `src/app/page.tsx` — scaffold against the installed Next version (see `node_modules/next/dist/docs/`); the `odpc-compliance-saas` siblings are a working reference.
 - Auth (sessions, password reset, email verify) — copy and adapt the `lib/session.ts`, `lib/password.ts`, `lib/email-verification.ts` set from `odpc-compliance-saas`.
 - Payments (M-Pesa Daraja / Paystack / card) — stack-specific, add per project.
 - `scripts/seed.ts` — present but currently a no-op placeholder for local seed data.
